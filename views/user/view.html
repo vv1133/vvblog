@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+{{template "head"}}
+<body>
+<!--[if lte IE 9]>
+<div class="browsehappy">
+    <p>您正在使用 <strong class="yellow">过时</strong> 的非现代浏览器，<strong class="success">91.23%</strong> 的人选择 <a href="http://browsehappy.com/" target="_blank"><strong class="green">升级浏览器</strong></a>，获得了更好、更安全的浏览体验！</p>
+</div>
+<![endif]-->
+<div class="search">
+    <form action="/search" method="get">
+        <input type="text" placeholder="请输入要搜索的内容..." name="q" autocomplete="off">
+        <button type="submit">搜索</button>
+    </form>
+</div>
+<header class="header">
+    <nav>
+        <ul class="menu">
+            <li class="back"><a href="/" title="返回首页"><< 返回首页</a></li>
+            <li><a href="javascript:;" title="文章搜索" id="search">文章搜索</a></li>
+            {{range .Pages}}<li><a href="/{{.Slug}}" title="{{.Caption}}">{{.Caption}}</a></li>{{end}}
+        </ul>
+    </nav>
+</header>
+<article class="container article">
+    <header>
+        <h1>{{.Caption}}</h1>
+    </header>
+    <div class="editormd-html-preview content">{{str2html .Html}}</div>
+    </article>
+<section class="container comment"><div class="ds-thread" data-thread-key="{{.Id}}" data-title="{{.Caption}}" data-url="http://localhost.com:8080/{{.Slug}}/"></div></section>
+{{template "footer"}}
+<a href="javascript:;" class="fa fa-arrow-circle-up fa-3x" id="gotop"></a>
+</body>
+<script src="https://lib.sinaapp.com/js/jquery/1.9.0/jquery.min.js"></script>
+<script src="/static/js/embed.js"></script>
+<script src="/static/js/blog.js"></script>
+
+<script>
+$(function(){
+    $('.content a').each(function(){
+        $(this).attr('target','_blank');
+    });
+});
+</script>
+</html>

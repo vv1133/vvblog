@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+{{template "head"}}
+<body>
+<header class="header">
+    <div class="container">
+        <h2><a href="/" target="_blank">{{.SiteName}}</a><small>{{.SubTitle}}</small></h2>
+        <nav class="xs-hide">
+            <a class="active" href="/admin"><i class="fa fa-home"></i> HOME</a>
+            <a href="/admin/new"><i class="fa fa-pencil"></i> NEW</a>
+            <a href="/admin/redirect"><i class="fa fa-link"></i> REDIRECT</a>
+            <a href="/admin/setting"><i class="fa fa-gear"></i> SETTING</a>
+            <a href="/admin/logout"><i class="fa fa-power-off"></i> LOGOUT</a>
+        </nav>
+        <i class="fa fa-list fa-2x xs-show" id="open-menu"></i>
+    </div>
+</header>
+<div class="error container hide">
+    <span>出现错误！</span>
+    <div class="msg"></div>
+</div>
+<section class="post-list container">
+    {{range .Lists}}
+    <article>
+        <header><h2>{{.Caption}}<small>{{.Type}}</small></h2></header>
+    </article>
+    {{end}}
+</section>
+{{template "footer"}}
+</body>
+<script src="https://lib.sinaapp.com/js/jquery/1.9.0/jquery.js"></script>
+<script>
+function Del(id){
+    if(id != ''){
+        $.get('/admin/del/' + id, function(result){
+            if(result.error != '0'){
+                $('.msg').html(result.error)
+                $('.error').show();
+            }else{
+                window.location = '';
+            }
+        });
+    }
+}
+
+function clickOrTouch(touchType){
+    return this.mouseOrTouch("click", touchType);
+}
+
+function mouseOrTouch(mouseType, touchType) {
+    mouseType = mouseType || "click";
+    touchType = touchType || "touchend";
+
+    var eventType = mouseType;
+
+    try {
+        document.createEvent("TouchEvent");
+        eventType = touchType;
+    } 
+    catch(e) {} 
+
+    return eventType;
+}
+
+$(function(){
+    $("#open-menu").bind(clickOrTouch(), function() {
+        $("nav").toggleClass("xs-hide");
+    });
+
+    $(window).bind('scroll',function(){
+        var scrollTop = $(window).scrollTop();
+        if(scrollTop > 100)
+            $('#go-top').show();
+        else
+            $('#go-top').hide();
+    });
+
+    $('#go-top').click(function(){
+        $('html,body').animate({
+            scrollTop: '0px'
+        }, 800);
+    });
+});
+</script>
+</html>

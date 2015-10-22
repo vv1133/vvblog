@@ -1,0 +1,89 @@
+package controllers
+
+import (
+	"fmt"
+	"github.com/astaxie/beego"
+	//"github.com/vv1133/vvblog/common"
+	"github.com/vv1133/vvblog/models"
+	"gopkg.in/mgo.v2/bson"
+	"strings"
+)
+
+type ArticlesController struct {
+	beego.Controller
+}
+
+func (c *ArticlesController) New() {
+	c.TplNames = "admin/new.html"
+}
+
+func (c *ArticlesController) Edit() {
+	c.Data["Website"] = "beego.me"
+	c.Data["Email"] = "astaxie@gmail.com"
+	c.TplNames = "admin/index.html"
+}
+
+func (c *ArticlesController) Del() {
+	c.Data["Website"] = "beego.me"
+	c.Data["Email"] = "astaxie@gmail.com"
+	c.TplNames = "admin/index.html"
+}
+
+func (c *ArticlesController) Update() {
+	if c.Ctx.Request.Method == "POST" {
+		ids := c.GetString("id")
+		id := bson.NewObjectId()
+		if ids != "" {
+			id = bson.ObjectIdHex(ids)
+		}
+
+		caption := c.GetString("caption")
+		slug := c.GetString("slug")
+		atype := c.GetString("type")
+		markdown := c.GetString("editor-markdown-doc")
+		html := c.GetString("html")
+		cover := c.GetString("cover")
+		tag := c.GetString("tag")
+		splits := strings.Split(tag, ",")
+
+		var tags []string
+
+		if len(splits) > 0 && splits[0] != "" {
+			for _, v := range splits {
+				tags = append(tags, strings.TrimSpace(v))
+				//s := common.GetSlug(v, false)
+				//models.Tag(strings.TrimSpace(v), strings.TrimSpace(s))
+			}
+		} else {
+			tags = splits
+		}
+
+		fmt.Println("ids:", ids)
+		fmt.Println("caption:", caption)
+		fmt.Println("slug:", slug)
+		fmt.Println("atype:", atype)
+		fmt.Println("markdown:", markdown)
+		fmt.Println("html:", html)
+		fmt.Println("cover:", cover)
+		fmt.Println("tag:", tag)
+		fmt.Println("splits:", splits)
+
+		scpost := &models.BlogPost{
+			Id:       id,
+			Caption:  caption,
+			Slug:     slug,
+			Tags:     tags,
+			Markdown: markdown,
+			Html:     html,
+			Cover:    cover,
+			Type:     atype,
+		}
+
+		err := scpost.Save()
+		if err != nil {
+			beego.Error(err)
+		}
+
+		c.Redirect("/admin", 302)
+	}
+}
