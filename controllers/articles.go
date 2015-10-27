@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/astaxie/beego"
-	//"github.com/vv1133/vvblog/common"
+	"github.com/vv1133/vvblog/common"
 	"github.com/vv1133/vvblog/models"
 	"gopkg.in/mgo.v2/bson"
 	"strings"
@@ -51,8 +51,8 @@ func (c *ArticlesController) Update() {
 		if len(splits) > 0 && splits[0] != "" {
 			for _, v := range splits {
 				tags = append(tags, strings.TrimSpace(v))
-				//s := common.GetSlug(v, false)
-				//models.Tag(strings.TrimSpace(v), strings.TrimSpace(s))
+				s := common.GetSlug(v, false)
+				models.Tag(strings.TrimSpace(v), strings.TrimSpace(s))
 			}
 		} else {
 			tags = splits

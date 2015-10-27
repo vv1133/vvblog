@@ -2,10 +2,20 @@ package common
 
 import (
 	"fmt"
+	"github.com/vv1133/vvblog/models"
+	"gopkg.in/mgo.v2/bson"
 	"regexp"
 	"strings"
 	"time"
 )
+
+func GetTagSlug(caption string) string {
+	var tag models.BlogTag
+
+	models.GetOneByQuery(models.DbTag, bson.M{"caption": caption}, &tag)
+
+	return tag.Slug
+}
 
 func GetSlug(str string, isslug bool) string {
 	retstr := ""

@@ -8,5 +8,6 @@ import (
 
 func main() {
 	beego.AddFuncMap("LoadTimes", common.LoadTimes)
+	beego.AddFuncMap("GetTagSlug", common.GetTagSlug)
 	beego.Run()
 }

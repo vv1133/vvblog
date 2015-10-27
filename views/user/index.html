@@ -35,6 +35,7 @@
         <footer>
             <span class="author">{{$.Author}}</span>
             <span class="date" data-time="{{.Created}}"><span class="time"></span></span>
+            <span class="tags">{{range .Tags}}<a class="tag" href="/tag/{{. | GetTagSlug}}">{{.}}</a>{{end}}</span>
         </footer>
     </article>
     {{end}}

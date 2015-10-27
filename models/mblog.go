@@ -20,6 +20,12 @@ type BlogPost struct {
 	Type     string        `bson:"type"`
 }
 
+type BlogTag struct {
+	Id      bson.ObjectId `_id`
+	Caption string        `bson:"caption"`
+	Slug    string        `bson:"slug"`
+}
+
 var (
 	Session *mgo.Session
 	DbPost  *mgo.Collection

@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 func GetDataByQuery(collection *mgo.Collection, start, length int, fields string, query interface{}, val interface{}) {
@@ -36,4 +37,16 @@ func Update(collection *mgo.Collection, query, data interface{}) error {
 
 func GetOneByQuery(collection *mgo.Collection, query, val interface{}) {
 	collection.Find(query).One(val)
+}
+
+func Tag(caption, slug string) error {
+	var tag BlogTag
+
+	tag.Id = bson.NewObjectId()
+	tag.Caption = caption
+	tag.Slug = slug
+
+	err := Insert(DbTag, tag)
+
+	return err
 }

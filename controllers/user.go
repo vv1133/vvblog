@@ -52,3 +52,44 @@ func (c *UserController) View() {
 	c.Data["StartTime"] = time.Now()
 	c.TplNames = "user/view.html"
 }
+
+func (this *UserController) TagList() {
+	tag := this.Ctx.Input.Param(":tag")
+	if tag == "" {
+		this.Abort("404")
+	}
+
+	var sctag models.BlogTag
+
+	models.GetOneByQuery(models.DbTag, bson.M{"slug": tag}, &sctag)
+
+	if sctag.Id.Hex() == "" {
+		this.Data["NotSearch"] = true
+		this.TplNames = "home/index.html"
+		return
+	}
+
+	tag = sctag.Caption
+
+	//      this.Data["SiteName"] = tag
+	//      this.Data["SubTitle"] = models.Option.SiteName
+	//      this.Data["Keywords"] = models.Option.Keywords
+	//      this.Data["Description"] = models.Option.Description
+
+	var scposts []models.BlogPost
+
+	count := models.Count(models.DbPost, bson.M{"type": "post", "tags": tag})
+
+	page := pagination.NewPaginator(this.Ctx.Request, 10, count)
+
+	this.Data["paginator"] = page
+
+	models.GetDataByQuery(models.DbPost, page.Offset(), 10, "-created", bson.M{"type": "post", "tags": tag}, &scposts)
+	this.Data["Lists"] = scposts
+
+	if len(scposts) <= 0 {
+		this.Data["NotSearch"] = true
+	}
+
+	this.TplNames = "user/index.html"
+}
