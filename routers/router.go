@@ -6,6 +6,10 @@ import (
 )
 
 func init() {
+	beego.SetStaticPath("/static", "static")
+
+	beego.ErrorController(&controllers.ErrorController{})
+
 	beego.Router("/", &controllers.UserController{}, "get:Index")
 	beego.Router("/:slug", &controllers.UserController{}, "get:View")
 	beego.Router("/tag/:tag", &controllers.UserController{}, "get:TagList")
