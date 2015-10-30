@@ -7,6 +7,8 @@ import (
 )
 
 func main() {
+	beego.AddFuncMap("Preview", common.Preview)
+	beego.AddFuncMap("GetId", common.GetId)
 	beego.AddFuncMap("LoadTimes", common.LoadTimes)
 	beego.AddFuncMap("GetTagSlug", common.GetTagSlug)
 	beego.Run()

@@ -35,8 +35,16 @@ func Update(collection *mgo.Collection, query, data interface{}) error {
 	return collection.Update(query, data)
 }
 
+func GetOneById(collection *mgo.Collection, id bson.ObjectId, val interface{}) {
+	collection.FindId(id).One(val)
+}
+
 func GetOneByQuery(collection *mgo.Collection, query, val interface{}) {
 	collection.Find(query).One(val)
+}
+
+func Delete(collection *mgo.Collection, query interface{}) error {
+	return collection.Remove(query)
 }
 
 func Tag(caption, slug string) error {

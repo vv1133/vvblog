@@ -20,7 +20,7 @@ func init() {
 
 	beego.Router("/admin/new", &controllers.ArticlesController{}, "get:New")
 	beego.Router("/admin/edit/:id", &controllers.ArticlesController{}, "get:Edit")
-	beego.Router("/admin/del", &controllers.ArticlesController{}, "get:Delete")
+	beego.Router("/admin/del/:id", &controllers.ArticlesController{}, "get:Del")
 	beego.Router("/admin/update", &controllers.ArticlesController{}, "post:Update")
 
 	beego.Router("/admin/setting", &controllers.SettingController{}, "get:Get")
